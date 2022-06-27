@@ -1,0 +1,27 @@
+`include "ctrl_encode_def.v"
+
+module ALUCtrl(ALUOp1, ALUOp2, funct, ALUSignal);
+    input ALUOp1;
+    input ALUOp2;
+    input funct;
+    output reg [4:0] ALUSignal;
+
+    always @(*) begin
+        if({ALUOp1, ALUOp2} == 2'b00)
+            ALUSignal = `ALUOp_ADD;
+        if({ALUOp1, ALUOp2} == 2'b01)
+            ALUSignal = `ALUOp_SUB;
+        if({ALUOp1, ALUOp2} == 2'b10)
+        begin
+            if(funct==6'b100000)
+                ALUSignal = `ALUOp_ADD;
+            if(funct == 6'b100010)
+                ALUSignal = `ALUOp_SUB;
+            if(funct == 6'b100100)
+                ALUSignal = `ALUOp_AND;
+            if(funct == 6'b100101)
+                ALUSignal = `ALUOp_OR;
+            if(funct == 6'b101010)
+                ALUSignal = `ALUOp_SLT;
+        end
+endmodule
